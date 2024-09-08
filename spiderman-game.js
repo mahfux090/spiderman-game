@@ -1,9 +1,6 @@
 
 (function(window, document) {
 
-// change this to relative path (relative to script) or to absolute path
-// where the audio, fonts and images folders are located
-// (include a slash at the end)
 var RESOURCES_FOLDER_PATH = "";
 
 var requestAnimationFrame = (function() {
@@ -98,7 +95,7 @@ function SpidermanGame(opts) {
 		this[option] = options[option];
 	}
 
-	// how many frames have passed
+	
 	this.frame = 0;
 	this.resources = {};
 
@@ -110,7 +107,7 @@ function SpidermanGame(opts) {
 		projectiles: [],
 		roofs: [],
 		enemies: [],
-	}; // object that contains information about the next scene
+	}; 
 }
 
 SpidermanGame.prototype.paused             = false;
@@ -200,7 +197,7 @@ SpidermanGame.prototype.load = function() {
 	document.addEventListener("keydown", function(e) {
 		var keyCode = e.keyCode || e.which;
 
-		// fire this on the FIRST keydown callback
+		
 		if (keyCode == KEY.ESC && !self.escapeKey) {
 			self.escapeKey = true;
 			if (self.paused) {
@@ -223,7 +220,6 @@ SpidermanGame.prototype.load = function() {
 	});
 
 	window.addEventListener("resize", function() {
-		// resizing might change the canvas position, re position the menu if it is visible
 		if (self.paused) {
 			self.showPauseMenu();
 		}
@@ -246,7 +242,7 @@ SpidermanGame.prototype.load = function() {
 		}
 	}
 
-	// to show that canvas is here, but is being loaded
+
 	this.canvas.style.backgroundColor = "black";
 	this.ctx.font = "30px Helvetica";
 	this.ctx.textAlign = "center";
@@ -274,7 +270,6 @@ SpidermanGame.prototype.load = function() {
 				self.update();
 				self.playSound(AUDIO_LOOP[0], false, 0);
 
-				// if game was muted in initial options
 				if (self.muted) self.mute();
 
 				return resolve();
@@ -337,7 +332,7 @@ SpidermanGame.prototype.showPauseMenu = function() {
 	if (this.gameoverMenu.style.display == "block") return;
 	var pauseMenu = this.pauseMenu;
 
-	var canvasRect = this.canvas.getBoundingClientRect(); // includes CSS translations
+	var canvasRect = this.canvas.getBoundingClientRect(); 
 	var left = canvasRect.left;
 	var top = canvasRect.top;
 
@@ -350,7 +345,7 @@ SpidermanGame.prototype.showGameoverMenu = function() {
 	var gameoverMenu = this.gameoverMenu;
 	this.gameoverMenu.querySelector(".spiderman-game-score").innerHTML = this.score;
 
-	var canvasRect = this.canvas.getBoundingClientRect(); // includes CSS translations
+	var canvasRect = this.canvas.getBoundingClientRect();
 	var left = canvasRect.left;
 	var top = canvasRect.top;
 
@@ -420,7 +415,7 @@ SpidermanGame.prototype.drawRoofs = function() {
 		roofs[i].update();
 	}
 
-	// if roof left the frame and was removed, add another one
+	
 	if (roofs.length < 3) {
 		var lastRoof = roofs[roofs.length - 1];
 		var x = lastRoof.x + lastRoof.fullWidth + Math.round(Math.random() * 50) + 100;
@@ -443,12 +438,12 @@ SpidermanGame.prototype.update = function() {
 	if (this.paused) return;
 	if (this.gameIsOver) return;
 
-	// draw the scene
+	
 	var scene = this.scene;
 	var spiderman = scene.spiderman;
 	var projectiles = scene.projectiles;
 
-	// clear the canvas for re drawing
+	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	this.drawBackground();
 	this.drawRoofs();
@@ -520,13 +515,13 @@ SpidermanGame.prototype.removeRoof = function(roof) {
 	}
 }
 
-// checks if given point is roof
+
 SpidermanGame.prototype.isRoofAtPoint = function(x, y) {
-	x -= this.cameraX; // to move point relative to canvas
+	x -= this.cameraX;
 	for (var i = 0; i < this.scene.roofs.length; i++) {
 		var roof = this.scene.roofs[i];
 
-		// since character is relative to the camera, calculate X of roof relative to camera as well
+		
 		var roofX = roof.x - this.cameraX;
 
 		if (roofX <= x && roofX + roof.fullWidth >= x && y >= roof.y) return roof;
@@ -550,10 +545,10 @@ SpidermanGame.prototype.isCharacterAtPoint = function(x, y) {
 		var bottom = top + stateImg.height * character.scale;
 
 		var isCharacter = 
-			   left   <= x // check left bound
-			&& top    <= y // top bound
-			&& right  >= x // right bound
-			&& bottom >= y; // bottom bound
+			   left   <= x 
+			&& top    <= y 
+			&& right  >= x 
+			&& bottom >= y; 
 
 		if (isCharacter) return character;
 	}
@@ -606,10 +601,10 @@ function SpiderMan(game) {
 	this.velocityX = 0;
 	this.velocityY = 0;
 
-	// to regenerate every N fps (approximately N / 60 seconds)
+	
 	this.regenerationSpeed = 1200;
 
-	// how many frames have passed
+	
 	this.frame = 0;
 
 	this.runningFrames = ["RUNNING_RIGHT_STEP", "RUNNING_CHANGE_STEP", "RUNNING_LEFT_STEP", "RUNNING_CHANGE_STEP"];
@@ -663,7 +658,7 @@ SpiderMan.prototype.handleHitWithProjectile = function(projectile) {
 	}
 }
 
-// returns the image to draw in position of spiderman
+
 SpiderMan.prototype.stateImage = function() {
 	var state = "STANDING";
 
